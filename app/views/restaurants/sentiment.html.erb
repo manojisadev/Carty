@@ -3,7 +3,25 @@
 		<div class="row">
 			<div class="col-lg-12">
 				<h1> Sentiments </h1>
-				<h2> Overall View :  Neutral  </h2>
+				
+					<% @senti %>
+					<% @reviews.each do |r| %>
+					  
+					 <%= @senti = r.value %> 
+
+				<% end %>
+
+				<h2> <%  @senti = (@senti/@reviews.size) %> 
+
+				<% case @senti %>
+				<% when @senti in -0.10..0.10%>
+					<% @holder = 'Neutral' %>
+				<% when @senti in 0.11..1.00 %>
+					<% @holder = 'Positive' %>
+				<% when @senti in -0.11..-1.00 %>
+					<% @holder = 'Negative' %>
+				<%= The Overall Sentiment : @holder %>
+				  </h2>
 
 				<% @reviews.each do |r| %>
 					<h4> <%= r.comment %> 
