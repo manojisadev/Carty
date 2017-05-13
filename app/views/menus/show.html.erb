@@ -1,0 +1,14 @@
+<%= label_tag 'name' %> <br>
+<%= @restaurant.name %> <br>
+
+<% @menus.each do |r| %>
+	<%= r.name %>
+	<%= r.price %>
+	<% if current_user %>
+		<% if current_user.id == @restaurant.user.id %>
+			<small><%= link_to "Edit", edit_restaurant_menu_path(@restaurant,r.id), class: "btn btn-primary btn-mini" %></small> 
+			<small><%= link_to "Delete", restaurant_menu_path(@restaurant,r.id), method: :delete, data: {confirm: "Are you sure you want to delete?"}, class: "btn btn-danger btn-mini" %></small>
+		<% end %>
+	<% end %>	
+	<br>
+<% end %>

@@ -1,0 +1,14 @@
+<%= form_for [@restaurant, @order] do |f| %>
+	<% @menus.each do |r| %>
+		<%= hidden_field(:r, :price, :value => r.price) %>
+		<%= f.label r.name %>
+		<br>
+		$ <%= r.price %>
+		<br>
+		<%= f.label :Quantity %>
+		<%= f.number_field r.id.to_s, value: 0, min: 0 %>
+		<br>
+		<% end %>
+		<br>
+		<%= f.submit %>
+<% end %>

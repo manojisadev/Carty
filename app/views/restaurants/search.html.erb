@@ -1,0 +1,45 @@
+
+<div class="container">
+	<div class= "row">
+		<h1 style="padding-left: 15px"> All Carts! </h1>
+		<% if @restaurants.blank? %>
+			<h4 style="padding-left: 15px;padding-top: 10px;padding-bottom: 10px;padding-right: 15px">  Sorry couldn't find a cart with your search criteria!
+			<%= link_to "Try Again", root_path, class: "btn btn-sm btn-warning" %></h4>
+		<% else %>	
+			<% @restaurants.each do |restaurant| %>
+				<% @reviews = Review.where(restaurant_id: @restaurant) %>
+						<% if @reviews.blank? %>
+							<% @avg_rating = 0 %>
+						<% else %> 
+							<%@avg_rating = @reviews.average(:rating).round(2)%>
+						<% end %>
+				<div class=" col-md-4 col-xs-4 col-sm-4  col-lg-4" style="padding-top: 5px;">
+					<% if restaurant.image_url.present? %>
+						<%= link_to image_tag(restaurant.image_url.to_s, class: "img-responsive"), restaurant %>
+					<% else %>
+						<%= link_to image_tag("http://placehold.it/350x300", class: "img-responsive"), restaurant, class: "thumbnails" %>
+					<% end %>
+						<div class="caption">
+							<h4 class="restaurant-title"><%= link_to restaurant.name, restaurant %></h4>
+								Location: <%= restaurant.city %> <%= restaurant.state %>
+								Category: <%= restaurant.category.name %>
+								<div class="review-rating" data-score=<%= @avg_rating %>><b>Rating:</b> </div>
+
+						</div>	
+				</div>	
+			<% end %>		
+		<% end %>
+	</div>
+</div>	
+
+<script> 
+$('.review-rating').raty({
+	readOnly: true,
+	score: function() {
+	return $(this).attr('data-score');
+	},
+	path: '/assets/'
+});
+
+
+</script>

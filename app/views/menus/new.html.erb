@@ -1,0 +1,12 @@
+<%= form_for [@restaurant, @menu] do |f| %>
+	<%= f.label :Name %>
+	<br>
+	<%= f.text_field :name %>
+	<br>
+	<%= f.label :Price %>
+	<br>
+	<%= f.number_field :price, value: 1, min: 1 %>
+	<br>
+	<br>
+	<%= f.submit %>
+<% end %>

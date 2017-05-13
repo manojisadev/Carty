@@ -1,0 +1,67 @@
+<div class ="container">
+	<div class="jumbotron">
+		<div class="row">
+			<div class="col-lg-12">
+				<h1> Welcome to Carty the best place to track,review and order your favorite food truck!  </h1>
+			</div>	
+		</div>
+		<div class="row">
+				<div class="col-lg-12">
+					<h1> Find your restaurant </h1>
+					<%= form_tag search_restaurants_path, class: "form-inline", method: :get do |f| %>
+						<div class="form-group">
+						<%= link_to image_tag('geo-location1.png') , localmap_restaurants_path %>
+							<%= text_field_tag :search, nil, placeholder: "Steaks, Burgers, Halal", class: "form-control" %>
+							<%= text_field_tag :search, nil, placeholder: "New York City, Miami", class: "form-control" %>
+							<%= select_tag :category, options_for_select(Category.all.map{ |c| [c.name, c.id]}), class: "form-control" %>
+							<%= submit_tag 'Search', class: " btn btn-primary" %>
+							OR 
+							<%= link_to "Map it!",  map_restaurants_path, class: " btn btn-primary" %>
+
+						</div>	
+					<% end %>	
+				</div>
+		</div>
+
+
+		<div class= "row">
+
+			<h4 style="padding-left: 15px;padding-top: 10px;padding-bottom: 10px;padding-right: 15px"> Newest Carts in town!
+			<%= link_to "View All", search_restaurants_path, class: "btn btn-sm btn-default pull-right" %></h4>
+			<div class="col-lg-12">
+				<% @restaurants.last(3).each do |restaurant| %>
+					<% @reviews = Review.where(restaurant_id: @restaurant) %>
+					<% if @reviews.blank? %>
+						<% @avg_rating = 0 %>
+					<% else %> 
+						<%@avg_rating = @reviews.average(:rating).round(2)%>
+					<% end %>
+					<div class="col-md-4 col-xs-4 col-sm-4  col-lg-4" style="padding-top: 5px;">
+							<% if restaurant.image_url.present? %>
+								<%= link_to image_tag(restaurant.image_url.to_s, class: "img-responsive"), restaurant %>
+							<% else %>
+								<%= link_to image_tag("http://placehold.it/350x300", class: "img-responsive"), restaurant, class: "thumbnails" %>
+							<% end %>
+							<h4 class="restaurant-title"><%= link_to restaurant.name, restaurant %></h4>
+										<b>Location:</b> <%= restaurant.city %> <%= restaurant.state %> <br>
+										<b>Category:</b> <%= restaurant.category.name %> <br>
+										<div class="review-rating" data-score=<%= @avg_rating %>><b>Rating:</b> </div>
+					</div>	
+				<% end %>	
+				</div>	
+			</div>	
+		</div>
+	</div>
+
+
+<script> 
+$('.review-rating').raty({
+	readOnly: true,
+	score: function() {
+	return $(this).attr('data-score');
+	},
+	path: '/assets/'
+});
+
+
+</script>

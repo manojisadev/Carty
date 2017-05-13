@@ -1,0 +1,19 @@
+<div class ="container">
+	<div class="jumbotron">
+		<div class="row">
+			<div class="col-lg-12">
+				<h1> Sentiments </h1>
+				<h2> Overall View :  Neutral  </h2>
+
+				<% @reviews.each do |r| %>
+					<h4> <%= r.comment %> 
+					 <%= r.sentiment %> </h4>
+
+				<% end %>
+
+
+			</div>	
+		</div>
+	</div>
+</div>	
+
